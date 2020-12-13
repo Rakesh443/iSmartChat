@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "513714401677",
+    "firebase_url": "https://ismartchat-3dc3e.firebaseio.com",
+    "project_id": "ismartchat-3dc3e",
+    "storage_bucket": "ismartchat-3dc3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513714401677:android:871b498deaa77053460dc4",
+        "android_client_info": {
+          "package_name": "com.raxx.ismartchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513714401677-erbng7h374drjmefptcggl6k3kr4jn7j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClH0tCaRvnyE_hbsakC5SvbBG3ituHVdA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513714401677-erbng7h374drjmefptcggl6k3kr4jn7j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
