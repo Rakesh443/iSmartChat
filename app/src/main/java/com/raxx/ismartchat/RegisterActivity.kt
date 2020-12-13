@@ -106,7 +106,7 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                     refUser = FirebaseDatabase.getInstance().reference.child("Users").child(firebassuserId)
                     val userHashMap = HashMap<String, Any>()
                     userHashMap["uid"]=firebassuserId
-                   userHashMap["userName"]=firebassuserId
+                   userHashMap["userName"]=rname.text.toString()
                    userHashMap["profile"]="https://firebasestorage.googleapis.com/v0/b/ismartchat-3dc3e.appspot.com/o/profile.png?alt=media&token=ecc47a5c-806c-4dcf-bf6d-7d3318058750"
                    userHashMap["cover"]="https://firebasestorage.googleapis.com/v0/b/ismartchat-3dc3e.appspot.com/o/cover.jfif?alt=media&token=48bd085a-0a71-46eb-9c00-1c128e69a299"
                    userHashMap["status"]="offline"
