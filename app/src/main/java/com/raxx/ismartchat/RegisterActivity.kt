@@ -107,21 +107,20 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                     val userHashMap = HashMap<String, Any>()
                     userHashMap["uid"]=firebassuserId
                    userHashMap["userName"]=rname.text.toString()
-                   userHashMap["profile"]="https://firebasestorage.googleapis.com/v0/b/ismartchat-3dc3e.appspot.com/o/profile.png?alt=media&token=ecc47a5c-806c-4dcf-bf6d-7d3318058750"
-                   userHashMap["cover"]="https://firebasestorage.googleapis.com/v0/b/ismartchat-3dc3e.appspot.com/o/cover.jfif?alt=media&token=48bd085a-0a71-46eb-9c00-1c128e69a299"
+                   userHashMap["profile"]="https://firebasestorage.googleapis.com/v0/b/ismartchat-3dc3e.appspot.com/o/profile.png?alt=media&token=bab88567-8c3a-4639-b725-61a6d15a9aea"
+                   userHashMap["cover"]="https://firebasestorage.googleapis.com/v0/b/ismartchat-3dc3e.appspot.com/o/Cover.PNG?alt=media&token=d830fadd-eeaa-4a00-8b18-dbfc4e8e570e"
                    userHashMap["status"]="offline"
                    userHashMap["search"]=rname.text.toString().toLowerCase()
                    userHashMap["DOB"]=rdateOfBirth.text.toString()
                    userHashMap["email"]=rEmailAddress.text.toString()
 
                     refUser.updateChildren(userHashMap)
-                        .addOnCompleteListener {
-                                task -> if(task.isSuccessful){
-                            Toast.makeText(applicationContext, "Successful Registered, Please Login", Toast.LENGTH_SHORT).show()
-                            var intent = Intent(this,WelcomeActivity::class.java)
+                        .addOnCompleteListener { task ->
+                            if(task.isSuccessful){
+                            val intent = Intent(this,WelcomeActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent)
-                                        }
+                            }
                         }
 
 

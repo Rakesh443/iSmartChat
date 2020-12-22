@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         firebaseUser= FirebaseAuth.getInstance().currentUser
         refUsers=FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
+        refUsers!!.keepSynced(true)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar_main)
         setSupportActionBar(toolbar)
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
 
         viewPagerAdapter.addFragment(ChatsFragment(), "Chats")
-        Toast.makeText(applicationContext, "Chats", Toast.LENGTH_LONG).show()
+
         viewPagerAdapter.addFragment(SearchFragment(), "Search")
         viewPagerAdapter.addFragment(SettingsFragment(), "Settings")
 
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                     val user:User?=p0.getValue(User::class.java)
 
                     user_name.text=user?.getUserName()
-                    Picasso.get().load(user?.getProfile()).into(profile_image)
+                    Picasso.get().load(user?.getProfile()).placeholder(R.drawable.profile).into(profile_image)
                 }
             }
 
