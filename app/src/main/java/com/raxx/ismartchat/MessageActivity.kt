@@ -113,6 +113,12 @@ class MessageActivity : AppCompatActivity() {
         }
 
         seenMessage(userIdVisit)
+
+//        msg_chat_back.setOnClickListener {
+//            val intent = Intent(this,WelcomeActivity::class.java)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+//            startActivity(intent)
+//        }
     }
 
 
@@ -316,6 +322,7 @@ class MessageActivity : AppCompatActivity() {
     private fun retriveMessages(senderId: String, receiverId: String, receiverImageUrl: String?) {
         mChatList = ArrayList()
         val reference = FirebaseDatabase.getInstance().reference.child("Chats")
+        reference.keepSynced(true)
 
         reference.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {

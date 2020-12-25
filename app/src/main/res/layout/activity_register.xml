@@ -24,6 +24,7 @@
 
             <EditText
                 android:id="@+id/rname"
+                android:textColor="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -32,6 +33,7 @@
                 android:padding="10dp"/>
 
             <EditText
+                android:textColor="@android:color/white"
                 android:id="@+id/rEmailAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,6 +52,7 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:textColor="@android:color/white"
                     android:id="@+id/rdateOfBirth"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
@@ -74,7 +77,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-
                 android:ems="10"
                 android:hint="Password"
                 android:inputType="textPassword" />
@@ -110,7 +112,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="40dp"
-                android:text="Alredy has an Account? click her to Sign In"
+                android:text="Already has an Account? click her to Sign In"
                 android:textSize="15dp" />
 
 

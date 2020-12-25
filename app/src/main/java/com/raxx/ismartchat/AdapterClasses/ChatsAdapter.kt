@@ -1,15 +1,19 @@
 package com.raxx.ismartchat.AdapterClasses
 
 import android.content.Context
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import com.raxx.ismartchat.Models.Chat
 import com.raxx.ismartchat.R
 import com.squareup.picasso.Picasso
@@ -83,6 +87,7 @@ class ChatsAdapter(
                 Picasso.get().load(chat.getUrl()).into(holder.right_image_view)
 
 
+
             }//image message- left side
             else if(!chat.getSender().equals(firebaseUser!!.uid)){
                 holder.show_text_message!!.visibility = View.GONE
@@ -94,6 +99,11 @@ class ChatsAdapter(
         //for Text Messages
         else{
             holder.show_text_message!!.text = chat.getMessage()
+            holder.show_text_message!!.setOnLongClickListener(){
+                msgOptions(position,holder)
+                return@setOnLongClickListener true
+            }
+
         }
 
         //sent and seen message
@@ -126,6 +136,7 @@ class ChatsAdapter(
             holder.text_seen!!.visibility = View.GONE
         }
 
+
     }
 
 
@@ -156,5 +167,33 @@ class ChatsAdapter(
         else{
             0
         }
+    }
+
+    private fun deleteMsg(position: Int,holder: ViewHolder){
+
+        val ref = FirebaseDatabase.getInstance().reference.child("Chats")
+            .child(mChatList.get(position).getMessageId()!!)
+            .removeValue()
+            .addOnCompleteListener{task ->
+                if(task.isSuccessful){
+                    Toast.makeText(holder.itemView.context, "Message Deleted", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(holder.itemView.context, "Error in Message Deleted", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+    }
+
+    private fun msgOptions(position:Int, holder: ViewHolder){
+        val options = arrayOf<CharSequence>("Delete")
+        var builder = AlertDialog.Builder(holder.itemView.context)
+        builder.setTitle("Options")
+        builder.setItems(options, DialogInterface.OnClickListener { dialog, i ->
+            if (i == 0) {
+                deleteMsg(position,holder)
+            }
+        })
+        builder.show()
     }
 }

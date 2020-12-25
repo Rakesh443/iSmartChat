@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-<<<<<<< Updated upstream
-=======
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -18,20 +16,19 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
+import com.raxx.ismartchat.AdapterClasses.CardChatAdapter
 import com.raxx.ismartchat.AdapterClasses.UserAdapter
 import com.raxx.ismartchat.Models.Chatlist
 import com.raxx.ismartchat.Models.User
 import com.raxx.ismartchat.Notifications.Token
->>>>>>> Stashed changes
 import com.raxx.ismartchat.R
 
 
 
-class ChatsFragment : Fragment(R.layout.fragment_chats) {
+class ChatsFragment : Fragment() {
 
-<<<<<<< Updated upstream
-=======
     private var userAdapter: UserAdapter? =null
+    private var cardChatAdapter: CardChatAdapter?=null
     private var mUsers : List<User>? = null
     private var userChatList : List<Chatlist>? = null
     lateinit var recycler_view_chartlist:RecyclerView
@@ -96,10 +93,11 @@ class ChatsFragment : Fragment(R.layout.fragment_chats) {
                     }
                 }
 
-                userAdapter = UserAdapter(context!!, mUsers as ArrayList<User>,true)
+//                userAdapter = UserAdapter(context!!, mUsers as ArrayList<User>,true)
 
-                recycler_view_chartlist.adapter=userAdapter
-                userAdapter!!.notifyDataSetChanged()
+                cardChatAdapter = CardChatAdapter(context!!, mUsers as ArrayList<User>,true)
+                recycler_view_chartlist.adapter=cardChatAdapter
+//                userAdapter!!.notifyDataSetChanged()
 
             }
 
@@ -110,5 +108,4 @@ class ChatsFragment : Fragment(R.layout.fragment_chats) {
         })
 
     }
->>>>>>> Stashed changes
 }

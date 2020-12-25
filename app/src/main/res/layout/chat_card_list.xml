@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/card_userImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/profile"
+            android:layout_marginEnd="8dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/card_image_online"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            app:civ_border_width="12dp"
+            android:layout_marginLeft="-16dp"
+            android:layout_toEndOf="@id/card_userImage"
+            app:civ_border_color="#05df29"
+            android:layout_marginTop="30dp"
+            android:visibility="gone"
+            />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/card_image_offline"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            app:civ_border_width="12dp"
+            android:layout_marginLeft="-16dp"
+            android:layout_toEndOf="@id/card_userImage"
+            app:civ_border_color="#bfbfbf"
+            android:layout_marginTop="30dp"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/card_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:layout_toEndOf="@+id/card_userImage"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/card_lastmessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/card_userImage"
+            android:layout_below="@+id/card_username"
+            android:textSize="16dp"
+            />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
+
