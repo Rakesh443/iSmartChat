@@ -8,11 +8,11 @@ android {
 
     defaultConfig {
         applicationId "com.raxx.ismartchat"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
+
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -53,11 +53,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-<<<<<<< Updated upstream
-=======
     implementation "com.squareup.okhttp3:okhttp:4.9.0"
-    implementation 'com.android.support:multidex:1.0.3'
->>>>>>> Stashed changes
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

@@ -28,7 +28,7 @@ import com.raxx.ismartchat.R
 class ChatsFragment : Fragment() {
 
     private var userAdapter: UserAdapter? =null
-    private var cardChatAdapter: CardChatAdapter?=null
+    private var cardChatAdapter: CardChatAdapter? =null
     private var mUsers : List<User>? = null
     private var userChatList : List<Chatlist>? = null
     lateinit var recycler_view_chartlist:RecyclerView
@@ -88,17 +88,14 @@ class ChatsFragment : Fragment() {
                     val user=snapShot.getValue(User::class.java)
                     for (eachChatList in userChatList!!){
                         if(user!!.getUid().equals(eachChatList.getId())){
+
                             (mUsers as ArrayList).add(user!!)
                         }
                     }
                 }
-
 //                userAdapter = UserAdapter(context!!, mUsers as ArrayList<User>,true)
-
                 cardChatAdapter = CardChatAdapter(context!!, mUsers as ArrayList<User>,true)
                 recycler_view_chartlist.adapter=cardChatAdapter
-//                userAdapter!!.notifyDataSetChanged()
-
             }
 
             override fun onCancelled(p0: DatabaseError) {

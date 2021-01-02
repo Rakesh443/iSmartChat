@@ -24,7 +24,7 @@
                 android:id="@+id/profile_image"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/profile"
+                android:src="@drawable/ic_profile"
                 android:tint="@android:color/white">
 
             </de.hdodenhof.circleimageview.CircleImageView>
@@ -51,10 +51,10 @@
 
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.viewpager.widget.ViewPager
-        android:paddingTop="10dp"
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         />
 
     <include layout="@layout/content_main" />

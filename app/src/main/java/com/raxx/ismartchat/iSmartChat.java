@@ -19,6 +19,5 @@ public class iSmartChat extends Application {
         built.setIndicatorsEnabled(false);
         built.setLoggingEnabled(true);
         Picasso.setSingletonInstance(built);
-
     }
 }

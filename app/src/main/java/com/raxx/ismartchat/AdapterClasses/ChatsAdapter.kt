@@ -79,7 +79,7 @@ class ChatsAdapter(
 
 
         if (chat.getMessage().equals("sent") && !chat.getUrl().equals("")){
-           // image message- right side
+            // image message- right side
             if(chat.getSender().equals(firebaseUser!!.uid)){
 
                 holder.show_text_message!!.visibility = View.GONE
@@ -119,16 +119,16 @@ class ChatsAdapter(
 
             }
 
-           else{
-               holder.text_seen!!.text = "Sent"
+            else{
+                holder.text_seen!!.text = "Sent"
 
-               if (chat.getMessage().equals("sent") && !chat.getUrl().equals("")){
-                   val rl = holder.text_seen!!.layoutParams as RelativeLayout.LayoutParams?
-                   rl!!.setMargins(0, 245, 10, 0)
-                   holder.text_seen!!.layoutParams =  rl
-               }
+                if (chat.getMessage().equals("sent") && !chat.getUrl().equals("")){
+                    val rl = holder.text_seen!!.layoutParams as RelativeLayout.LayoutParams?
+                    rl!!.setMargins(0, 245, 10, 0)
+                    holder.text_seen!!.layoutParams =  rl
+                }
 
-           }
+            }
 
 
         }

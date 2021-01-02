@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                     val user:User?=p0.getValue(User::class.java)
 
                     user_name.text=user?.getUserName()
-                    Picasso.get().load(user?.getProfile()).into(profile_image)
+                    Picasso.get().load(user?.getProfile()).placeholder(R.drawable.profile).into(profile_image)
                 }
             }
 
@@ -126,23 +126,5 @@ class MainActivity : AppCompatActivity() {
             return titles[position]
         }
 
-    }
-
-    private fun updateStatus(status:String){
-        val ref = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
-        val hashMap = HashMap<String,Any>()
-        hashMap["status"] = status
-        ref.updateChildren(hashMap)
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        updateStatus("online")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        updateStatus("offline")
     }
 }

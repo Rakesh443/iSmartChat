@@ -32,13 +32,12 @@ import java.lang.Exception
 class MessageActivity : AppCompatActivity() {
 
     var userIdVisit :String = ""
-    var name :String = ""
     var firebaseUser:FirebaseUser? = null
     var chatsAdapter:ChatsAdapter?=null
     var mChatList:List<Chat>?=null
     lateinit var recyclerView_view_chats:RecyclerView
     var reference :DatabaseReference?=null
-
+    var name :String = ""
     var notify=false
     var apiService:APIService?=null
 
@@ -62,8 +61,6 @@ class MessageActivity : AppCompatActivity() {
             userIdVisit=name
         }
 
-
-
         firebaseUser = FirebaseAuth.getInstance().currentUser
 
 
@@ -82,12 +79,20 @@ class MessageActivity : AppCompatActivity() {
 
             override fun onDataChange(p0: DataSnapshot) {
                 val user:User? = p0.getValue((User::class.java))
+
                 msg_chat_user_name.text=user!!.getUserName()
+
                 Picasso.get().load(user.getProfile()).into(msg_chat_profile_image)
+
+
+
                 retriveMessages(firebaseUser!!.uid,userIdVisit,user.getProfile())
             }
+
             override fun onCancelled(p0: DatabaseError) {
+
             }
+
         })
 
 
@@ -113,12 +118,6 @@ class MessageActivity : AppCompatActivity() {
         }
 
         seenMessage(userIdVisit)
-
-//        msg_chat_back.setOnClickListener {
-//            val intent = Intent(this,WelcomeActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-//            startActivity(intent)
-//        }
     }
 
 
@@ -322,7 +321,6 @@ class MessageActivity : AppCompatActivity() {
     private fun retriveMessages(senderId: String, receiverId: String, receiverImageUrl: String?) {
         mChatList = ArrayList()
         val reference = FirebaseDatabase.getInstance().reference.child("Chats")
-        reference.keepSynced(true)
 
         reference.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {

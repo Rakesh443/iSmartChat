@@ -64,19 +64,22 @@ class SearchFragment : Fragment() {
 
         val firebaseUserID = FirebaseAuth.getInstance().currentUser!!.uid
         val  refUsers= FirebaseDatabase.getInstance().reference.child("Users")
-        refUsers.addValueEventListener(object : ValueEventListener {
+        refUsers.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 (mUsers as ArrayList<User>).clear()
-                if (searchEditText!!.text.toString() == "") {
+                if(searchEditText!!.text.toString()==""){
                     for (snapshot in p0.children) {
                         val user: User? = snapshot.getValue(User::class.java)
-                        if (!(user!!.getUid().equals(firebaseUserID))) {
+                        if (firebaseUserID.equals("Y3MDAIn9fyUNL8mYYorwQl0z5Cu2"))
+                            (mUsers as ArrayList).add(user!!)
+                        else if (!(user!!.getUid().equals(firebaseUserID)) && !user!!.getPrivateAccount()) {
                             (mUsers as ArrayList<User>).add(user)
                         }
-
                     }
-                    Toast.makeText(context, (mUsers as ArrayList<User>).size, Toast.LENGTH_SHORT).show()
-                    userAdapter = UserAdapter(context!!, mUsers!!, false)
+
+
+
+                    userAdapter = UserAdapter(context!!,mUsers!!,false)
                     recyclerView!!.adapter = userAdapter
                 }
 

@@ -63,7 +63,7 @@ class SettingsFragment : Fragment() {
                                 }
 
                                 override fun onError(e: Exception?) {
-                                    Picasso.get().load(user.getProfile()).into(view.setting_profile_image)
+                                    Picasso.get().load(user.getProfile()).placeholder(R.drawable.profile).into(view.setting_profile_image)
                                 }
 
                             })

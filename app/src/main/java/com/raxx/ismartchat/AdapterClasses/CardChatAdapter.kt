@@ -81,32 +81,41 @@ class CardChatAdapter(mContext: Context, mUsers:List<User>, isChatCheck:Boolean)
 
     private fun retrieveLastMsg(onlineuserid: String?, lastMessageTxt: TextView) {
 
-//        lastMsg = "No Messages"
-//        val firebaseUser = FirebaseAuth.getInstance().currentUser
-//        val ref = FirebaseDatabase.getInstance().reference.child("Chats")
-//        ref.keepSynced(true)
-//        ref.addValueEventListener(object :ValueEventListener{
-//            override fun onDataChange(p0: DataSnapshot) {
-//                for (snapshot in p0.children){
-//                    val chat = snapshot.getValue(Chat::class.java)
-//                    if(firebaseUser!=null && chat!=null){
-//                        if(chat.getReceiver()==firebaseUser!!.uid && chat.getSender()==onlineuserid
-//                            || chat.getReceiver()==onlineuserid && chat.getSender() == firebaseUser!!.uid){
-//                                lastMsg = chat.getMessage()!!
-//                        }
-//                    }
-//                }
-//
-//
-//                lastMessageTxt.text = lastMsg
-//
-//            }
-//
-//            override fun onCancelled(p0: DatabaseError) {
-//
-//            }
-//
-//        })
+        lastMsg = "No Messages"
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val ref = FirebaseDatabase.getInstance().reference.child("Chats")
+        ref.keepSynced(true)
+        ref.addValueEventListener(object :ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                for (snapshot in p0.children){
+                    val chat = snapshot.getValue(Chat::class.java)
+                    if(firebaseUser!=null && chat!=null){
+                        if(chat.getReceiver()==firebaseUser!!.uid && chat.getSender()==onlineuserid
+                            || chat.getReceiver()==onlineuserid && chat.getSender() == firebaseUser!!.uid){
+                            if(chat.getReceiver()==firebaseUser!!.uid){
+                                lastMsg = chat.getMessage()!!
+
+                            }else{
+                                if(chat.getIsseen())
+                                    lastMsg = "seen: "+chat.getMessage()!!
+                                else
+                                    lastMsg = "sent: "+chat.getMessage()!!
+                            }
+
+                        }
+                    }
+                }
+
+
+                lastMessageTxt.text = lastMsg
+
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+        })
     }
 
     override fun getItemCount(): Int {

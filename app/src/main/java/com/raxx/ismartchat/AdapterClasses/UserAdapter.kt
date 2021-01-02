@@ -29,13 +29,13 @@ class UserAdapter(mContext:Context,mUsers:List<User>,isChatCheck:Boolean)
         this.mUser = mUsers
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserAdapter.ViewHolder {
 
         val view:View = LayoutInflater.from(mContext).inflate(R.layout.user_search_layout,parent,false)
-        return ViewHolder(view)
+        return UserAdapter.ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UserAdapter.ViewHolder, position: Int) {
 
         val user:User?=mUser[position]
 

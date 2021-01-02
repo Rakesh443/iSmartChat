@@ -9,6 +9,7 @@ class User{
     private var email : String = ""
     private var cover : String = ""
     private var DOB : String = ""
+    private var privateAccount : Boolean = false
 
     constructor()
     constructor(
@@ -19,7 +20,7 @@ class User{
         profile: String,
         email: String,
         cover: String,
-        DOB: String
+        DOB: String,
     ) {
         this.uid = uid
         this.userName = userName
@@ -94,6 +95,14 @@ class User{
 
     fun setDOB(DOB: String?) {
         this.DOB = DOB!!
+    }
+
+    fun getPrivateAccount(): Boolean {
+        return privateAccount
+    }
+
+    fun setPrivateAccount(isseen: Boolean) {
+        this.privateAccount = isseen
     }
 
 

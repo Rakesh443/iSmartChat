@@ -23,11 +23,9 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-
                 android:src="@mipmap/ic_launcher_round"
                 android:layout_gravity="center">
             </ImageView>
-
 
             <EditText
 
@@ -39,8 +37,8 @@
                 android:drawableStart="@mipmap/ic_launcher"
                 android:drawablePadding="10dp"
                 android:hint="Enter Email"
-                android:padding="10dp"
-                android:drawableLeft="@mipmap/ic_launcher" />
+                android:textColor="@android:color/white"
+                android:padding="10dp" />
 
             <EditText
 
@@ -53,8 +51,7 @@
                 android:drawablePadding="10dp"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:padding="10dp"
-                android:drawableLeft="@mipmap/ic_launcher" />
+                android:padding="10dp" />
 
             <TextView
                 android:id="@+id/forgotId"
@@ -72,12 +69,16 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/loginbuttonbackground"
+
+
                 android:text="Log In"
+
                 android:textAllCaps="false"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/signupId"
+                android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
