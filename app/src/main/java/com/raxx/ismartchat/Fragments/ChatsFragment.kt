@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -81,21 +82,30 @@ class ChatsFragment : Fragment() {
 
         val ref = FirebaseDatabase.getInstance().reference.child("Users")
 
-        ref.addValueEventListener(object :ValueEventListener{
+        ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 (mUsers as ArrayList).clear()
-                for (snapShot in p0.children){
-                    val user=snapShot.getValue(User::class.java)
-                    for (eachChatList in userChatList!!){
-                        if(user!!.getUid().equals(eachChatList.getId())){
+                for (snapShot in p0.children) {
+
+                    val user = snapShot.getValue(User::class.java)
+                    for (eachChatList in userChatList!!) {
+                        if (user!!.getUid().equals(eachChatList.getId())) {
 
                             (mUsers as ArrayList).add(user!!)
                         }
                     }
                 }
+
 //                userAdapter = UserAdapter(context!!, mUsers as ArrayList<User>,true)
-                cardChatAdapter = CardChatAdapter(context!!, mUsers as ArrayList<User>,true)
-                recycler_view_chartlist.adapter=cardChatAdapter
+
+                cardChatAdapter = CardChatAdapter(context!!, mUsers as ArrayList<User>, true)
+//                cardChatAdapter!!.notifyDataSetChanged()
+
+                recycler_view_chartlist.adapter = cardChatAdapter
+
+
+
+
             }
 
             override fun onCancelled(p0: DatabaseError) {

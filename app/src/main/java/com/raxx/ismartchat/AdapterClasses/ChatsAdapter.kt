@@ -1,6 +1,9 @@
 package com.raxx.ismartchat.AdapterClasses
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +13,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -137,6 +141,8 @@ class ChatsAdapter(
         }
 
 
+
+
     }
 
 
@@ -186,14 +192,27 @@ class ChatsAdapter(
     }
 
     private fun msgOptions(position:Int, holder: ViewHolder){
-        val options = arrayOf<CharSequence>("Delete")
+        val options = arrayOf<CharSequence>("Delete","Copy")
         var builder = AlertDialog.Builder(holder.itemView.context)
         builder.setTitle("Options")
         builder.setItems(options, DialogInterface.OnClickListener { dialog, i ->
             if (i == 0) {
                 deleteMsg(position,holder)
             }
+            else if(i==1){
+                copyText(position,holder)
+            }
         })
         builder.show()
+    }
+
+    private fun copyText(position: Int, holder: ChatsAdapter.ViewHolder) {
+
+        var str = mChatList.get(position).getMessage()
+
+        var myClipboard = getSystemService(mContext, ClipboardManager::class.java) as ClipboardManager
+        val clip: ClipData = ClipData.newPlainText("simple text", str)
+
+        myClipboard.setPrimaryClip(clip)
     }
 }

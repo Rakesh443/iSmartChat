@@ -3,9 +3,11 @@ package com.raxx.ismartchat
 import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.Continuation
@@ -21,13 +23,12 @@ import com.raxx.ismartchat.Fragments.APIService
 import com.raxx.ismartchat.Models.Chat
 import com.raxx.ismartchat.Models.User
 import com.raxx.ismartchat.Notifications.*
-import com.squareup.picasso.Callback
-import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_message.*
 import retrofit2.Call
 import retrofit2.Response
-import java.lang.Exception
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MessageActivity : AppCompatActivity() {
 
@@ -40,16 +41,26 @@ class MessageActivity : AppCompatActivity() {
     var name :String = ""
     var notify=false
     var apiService:APIService?=null
+//    private val encryptionKey =
+//        byteArrayOf(12, 45, 67, 89, 32, 65, 87, -5, 11, -52, 5, -6, 87, 33, 3, -2)
+//    private lateinit var cipher:Cipher
+//    private lateinit var decipher:Cipher
+//    private lateinit var secretKey: SecretKeySpec
 
 
 
 
 
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message)
 
 
+//        cipher = Cipher.getInstance("AES")
+//        decipher = Cipher.getInstance("AES")
+//        secretKey = SecretKeySpec(encryptionKey,"AES")
 
         intent = intent
         name = intent.getStringExtra("userid").toString()
@@ -75,18 +86,18 @@ class MessageActivity : AppCompatActivity() {
         reference = FirebaseDatabase.getInstance().reference
             .child("Users").child(userIdVisit)
         reference!!.keepSynced(true)
-        reference!!.addValueEventListener(object :ValueEventListener{
+        reference!!.addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(p0: DataSnapshot) {
-                val user:User? = p0.getValue((User::class.java))
+                val user: User? = p0.getValue((User::class.java))
 
-                msg_chat_user_name.text=user!!.getUserName()
+                msg_chat_user_name.text = user!!.getUserName()
 
                 Picasso.get().load(user.getProfile()).into(msg_chat_profile_image)
 
 
 
-                retriveMessages(firebaseUser!!.uid,userIdVisit,user.getProfile())
+                retriveMessages(firebaseUser!!.uid, userIdVisit, user.getProfile())
             }
 
             override fun onCancelled(p0: DatabaseError) {
@@ -97,13 +108,20 @@ class MessageActivity : AppCompatActivity() {
 
 
         msg_send_btn.setOnClickListener {
+            val current = LocalDateTime.now()
+
+            val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+            val formatted = current.format(formatter)
+
+
             notify=true
+//            val msg = AESEncryption(text_message.text.toString())
             val message=text_message.text.toString()
             if(message==""){
                 Toast.makeText(applicationContext, "write something", Toast.LENGTH_SHORT).show()
             }
             else{
-                sendMessageToUser(firebaseUser!!.uid , userIdVisit,message)
+                sendMessageToUser(firebaseUser!!.uid, userIdVisit, message,formatted)
 
             }
             text_message.setText("")
@@ -121,9 +139,25 @@ class MessageActivity : AppCompatActivity() {
     }
 
 
+//    private fun AESEncryption(msg:String) : String{
+//        var str = msg.toByteArray()
+//        val returnStr:String=""
+//        var encryptedBytes = byteArrayOf(str.size.toByte())
+//        cipher.init(Cipher.ENCRYPT_MODE,secretKey)
+//        encryptedBytes=cipher.doFinal(str)
+//
+//        return returnStr
+//    }
 
 
-    private fun sendMessageToUser(senderid: String, receiverId: String, message: String) {
+
+
+    private fun sendMessageToUser(
+        senderid: String,
+        receiverId: String,
+        message: String,
+        tym: String
+    ) {
 
 
 
@@ -137,6 +171,7 @@ class MessageActivity : AppCompatActivity() {
         messageHashMap["isSeen"] = false
         messageHashMap["url"] = ""
         messageHashMap["messageId"] = messageKey
+        messageHashMap["tymdate"] = tym
 
         reference.child("Chats")
             .child(messageKey!!)
@@ -147,9 +182,9 @@ class MessageActivity : AppCompatActivity() {
                         .child(firebaseUser!!.uid)
                         .child(userIdVisit)
 
-                    chatListReference.addValueEventListener(object:ValueEventListener{
+                    chatListReference.addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(p0: DataSnapshot) {
-                            if(!p0.exists()){
+                            if (!p0.exists()) {
                                 chatListReference.child("id").setValue(userIdVisit)
                             }
                             val chatListReceiverReference = FirebaseDatabase.getInstance()
@@ -174,12 +209,12 @@ class MessageActivity : AppCompatActivity() {
         val userreference = FirebaseDatabase.getInstance().reference
             .child("Users").child(firebaseUser!!.uid)
 
-        userreference.addValueEventListener(object : ValueEventListener{
+        userreference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 val user = p0.getValue(User::class.java)
 
-                if(notify){
-                    sendNotification(receiverId,user!!.getUserName(),message)
+                if (notify) {
+                    sendNotification(receiverId, user!!.getUserName(), message)
                 }
                 notify = false
             }
@@ -195,6 +230,7 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private fun sendNotification(receiverId: String, userName: String?, message: String) {
+
 
         val ref = FirebaseDatabase.getInstance().reference.child("Tokens")
 
@@ -224,7 +260,11 @@ class MessageActivity : AppCompatActivity() {
                             ) {
                                 if (response.code() == 200) {
                                     if (response.body()!!.success !== 1) {
-                                        Toast.makeText(this@MessageActivity, "Failed, Nothing happen...", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            this@MessageActivity,
+                                            "Failed, Nothing happen...",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                 }
                             }
@@ -263,9 +303,9 @@ class MessageActivity : AppCompatActivity() {
             var uploadTask: StorageTask<*>
             uploadTask = filePath.putFile(fileUri!!)
 
-            uploadTask.continueWithTask(Continuation <UploadTask.TaskSnapshot, Task<Uri>>{ task ->
-                if(task.isSuccessful){
-                    task.exception?.let{
+            uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                if (task.isSuccessful) {
+                    task.exception?.let {
                         throw it
                     }
 
@@ -292,12 +332,16 @@ class MessageActivity : AppCompatActivity() {
                                     .child("Users").child(firebaseUser!!.uid)
 
 
-                                reference.addValueEventListener(object : ValueEventListener{
+                                reference.addValueEventListener(object : ValueEventListener {
                                     override fun onDataChange(p0: DataSnapshot) {
                                         val user = p0.getValue(User::class.java)
 
-                                        if(notify){
-                                            sendNotification(userIdVisit,user!!.getUserName(),"Sent you an Image")
+                                        if (notify) {
+                                            sendNotification(
+                                                userIdVisit,
+                                                user!!.getUserName(),
+                                                "Sent you an Image"
+                                            )
                                         }
 
                                         notify = false
@@ -322,20 +366,25 @@ class MessageActivity : AppCompatActivity() {
         mChatList = ArrayList()
         val reference = FirebaseDatabase.getInstance().reference.child("Chats")
 
-        reference.addValueEventListener(object :ValueEventListener{
+        reference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 (mChatList as ArrayList<Chat>).clear()
-                for(snapshot in p0.children){
+                for (snapshot in p0.children) {
                     val chat = snapshot.getValue(Chat::class.java)
 
-                    if(chat!!.getReceiver().equals(senderId) && chat.getSender().equals(receiverId)
-                        || chat.getReceiver().equals(receiverId) && chat.getSender().equals(senderId)){
+                    if (chat!!.getReceiver().equals(senderId) && chat.getSender().equals(receiverId)
+                        || chat.getReceiver().equals(receiverId) && chat.getSender()
+                            .equals(senderId)
+                    ) {
                         (mChatList as ArrayList<Chat>).add(chat)
                     }
 
-                    chatsAdapter = ChatsAdapter(this@MessageActivity,
-                        mChatList as ArrayList<Chat>,receiverImageUrl!!)
-                    recyclerView_view_chats.adapter=chatsAdapter
+                    chatsAdapter = ChatsAdapter(
+                        this@MessageActivity,
+                        mChatList as ArrayList<Chat>, receiverImageUrl!!
+                    )
+
+                    recyclerView_view_chats.adapter = chatsAdapter
 
                 }
             }
@@ -350,14 +399,18 @@ class MessageActivity : AppCompatActivity() {
 
     var seenListener : ValueEventListener?= null
 
-    private fun seenMessage(userId:String){
+    private fun seenMessage(userId: String){
         val reference = FirebaseDatabase.getInstance().reference.child("Chats")
-        seenListener = reference!!.addValueEventListener(object :ValueEventListener{
+        seenListener = reference!!.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-                for (snapshot in p0.children){
+                for (snapshot in p0.children) {
                     val chat = snapshot.getValue(Chat::class.java)
-                    if (chat!!.getReceiver()!!.equals(firebaseUser!!.uid) && chat!!.getSender().equals(userId)){
-                        val hashMap = HashMap<String,Any>()
+                    if (chat!!.getReceiver()!!.equals(firebaseUser!!.uid) && chat!!.getSender()
+                            .equals(
+                                userId
+                            )
+                    ) {
+                        val hashMap = HashMap<String, Any>()
                         hashMap["isseen"] = true
                         snapshot.ref.updateChildren(hashMap)
                     }

@@ -7,6 +7,8 @@ import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 public class iSmartChat extends Application {
+
+
     @Override
     public void onCreate() {
         super.onCreate();

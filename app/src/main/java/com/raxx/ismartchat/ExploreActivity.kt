@@ -1,14 +1,12 @@
-package com.raxx.ismartchat.Fragments
+package com.raxx.ismartchat
 
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -18,32 +16,34 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.raxx.ismartchat.AdapterClasses.UserAdapter
 import com.raxx.ismartchat.Models.User
-import com.raxx.ismartchat.R
+import kotlinx.android.synthetic.main.activity_explore.*
 import java.util.ArrayList
 
 
-class SearchFragment : Fragment() {
+private var userAdapter: UserAdapter? =null
+private var mUsers : List<User>? = null
+private var recyclerView: RecyclerView?=null
+private var searchEditText: EditText?=null
+class ExploreActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_explore)
 
-    private var userAdapter: UserAdapter? =null
-    private var mUsers : List<User>? = null
-    private var recyclerView:RecyclerView?=null
-    private var searchEditText:EditText?=null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_search,container,false)
-
-        recyclerView= view.findViewById(R.id.searchList)
+        recyclerView= findViewById(R.id.explore_searchList)
         recyclerView!!.setHasFixedSize(true)
-        recyclerView!!.layoutManager=LinearLayoutManager(context)
-        searchEditText= view.findViewById(R.id.searchUsersET)
+        recyclerView!!.layoutManager= LinearLayoutManager(this)
+        searchEditText= findViewById(R.id.explore_search)
 
         mUsers=ArrayList()
         retrieveAllUsers()
-        searchEditText!!.addTextChangedListener(object : TextWatcher{
+
+        explore_back.setOnClickListener {
+            onBackPressed()
+        }
+
+        searchEditText!!.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -57,14 +57,18 @@ class SearchFragment : Fragment() {
             }
 
         })
-        return view
     }
+
+
+
+
+
 
     private fun retrieveAllUsers() {
 
         val firebaseUserID = FirebaseAuth.getInstance().currentUser!!.uid
         val  refUsers= FirebaseDatabase.getInstance().reference.child("Users")
-        refUsers.addValueEventListener(object : ValueEventListener{
+        refUsers.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 (mUsers as ArrayList<User>).clear()
                 if(searchEditText!!.text.toString()==""){
@@ -72,15 +76,15 @@ class SearchFragment : Fragment() {
                         val user: User? = snapshot.getValue(User::class.java)
                         if (firebaseUserID.equals("Y3MDAIn9fyUNL8mYYorwQl0z5Cu2"))
                             (mUsers as ArrayList).add(user!!)
-                        else if (!(user!!.getUid().equals(firebaseUserID)) && !user!!.getPrivateAccount())
+                        else if (!(user!!.getUid().equals(firebaseUserID)) && !user!!.getPrivateAccount()) {
                             (mUsers as ArrayList<User>).add(user)
-
+                        }
                     }
 
 
 
-                    userAdapter = UserAdapter(context!!,mUsers!!,false)
-                    recyclerView!!.adapter = userAdapter
+                    userAdapter = UserAdapter(this@ExploreActivity!!,mUsers!!,false)
+//                    recyclerView!!.adapter = userAdapter
                 }
 
             }
@@ -92,9 +96,12 @@ class SearchFragment : Fragment() {
         })
 
 
+
     }
 
+
     private fun searchForUser(str:String){
+
         val firebaseUserID = FirebaseAuth.getInstance().currentUser!!.uid
         val quertUsers = FirebaseDatabase.getInstance()
             .reference.child("Users").orderByChild("search")
@@ -102,16 +109,21 @@ class SearchFragment : Fragment() {
             .endAt(str+"\uf8ff")
 
         quertUsers.addValueEventListener(object : ValueEventListener{
+
             override fun onDataChange(p0: DataSnapshot) {
+                recyclerView!!.setVisibility(View.VISIBLE)
                 (mUsers as ArrayList<User>).clear()
                 for (snapshot in p0.children){
                     val user:User? = snapshot.getValue(User::class.java)
-                    if(!(user!!.getUid().equals(firebaseUserID))){
+                    if (firebaseUserID.equals("Y3MDAIn9fyUNL8mYYorwQl0z5Cu2"))
+                        (mUsers as ArrayList).add(user!!)
+                    else if (!(user!!.getUid().equals(firebaseUserID)) && !user!!.getPrivateAccount())
                         (mUsers as ArrayList<User>).add(user)
-                    }
 
                 }
-                userAdapter = UserAdapter(context!!,mUsers!!,false)
+                userAdapter = UserAdapter(this@ExploreActivity!!,mUsers!!,false)
+                if(str=="")
+                    recyclerView!!.setVisibility(View.GONE)
                 recyclerView!!.adapter = userAdapter
             }
 
@@ -122,4 +134,12 @@ class SearchFragment : Fragment() {
         })
     }
 
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        var intent1 = Intent(this,MainActivity::class.java)
+        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent1)
+    }
 }

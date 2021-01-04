@@ -17,7 +17,7 @@
         android:id="@+id/msg_chat_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/design_default_color_secondary_variant"
         app:popupTheme="@style/AppTheme.PopupOverlay" >
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -69,8 +69,9 @@
         <EditText
             android:id="@+id/text_message"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
+            android:layout_height="40dp"
+            android:background="@drawable/round_corner"
+            android:paddingStart="10dp"
             android:hint="type message here..."
             android:layout_toRightOf="@+id/attach_file"
             android:layout_toLeftOf="@id/msg_send_btn"
