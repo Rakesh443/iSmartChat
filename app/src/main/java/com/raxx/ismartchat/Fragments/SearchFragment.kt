@@ -76,8 +76,7 @@ class SearchFragment : Fragment() {
                             (mUsers as ArrayList<User>).add(user)
 
                     }
-
-
+//                    (mUsers as ArrayList<User>).sortByDescending { firebaseUserID }
 
                     userAdapter = UserAdapter(context!!,mUsers!!,false)
                     recyclerView!!.adapter = userAdapter
