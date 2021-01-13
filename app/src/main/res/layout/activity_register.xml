@@ -14,16 +14,19 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:background="@drawable/logintextbackground"
             android:layout_marginEnd="20dp"
+            android:layout_marginTop="30dp"
             android:orientation="vertical">
 
 
             <EditText
                 android:id="@+id/rname"
+                android:textColor="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -36,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="@android:color/white"
                 android:inputType="textEmailAddress"
                 android:layout_marginTop="20dp"
                 android:drawablePadding="10dp"
@@ -55,6 +59,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:inputType="text"
+                    android:textColor="@android:color/white"
                     android:drawablePadding="10dp"
                     android:hint="Enter Date of Birth"
                     android:padding="10dp" />
@@ -74,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-
+                android:textColor="@android:color/white"
                 android:ems="10"
                 android:hint="Password"
                 android:inputType="textPassword" />
@@ -110,6 +115,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="40dp"
+                android:textColor="@android:color/white"
                 android:text="Alredy has an Account? click her to Sign In"
                 android:textSize="15dp" />
 

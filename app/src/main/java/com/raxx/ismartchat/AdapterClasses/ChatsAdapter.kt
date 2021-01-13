@@ -1,25 +1,35 @@
 package com.raxx.ismartchat.AdapterClasses
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
+import android.content.DialogInterface
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.appcompat.view.menu.ActionMenuItemView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import com.raxx.ismartchat.Models.Chat
 import com.raxx.ismartchat.R
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.view.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class ChatsAdapter(
     mContext: Context,
-    mChatList:List<Chat>,
-    imageUrl:String
+    mChatList: List<Chat>,
+    imageUrl: String
 ) :RecyclerView.Adapter<ChatsAdapter.ViewHolder?>(){
 
 
@@ -28,7 +38,10 @@ class ChatsAdapter(
     private val imageUrl:String
 
     var firebaseUser:FirebaseUser?=FirebaseAuth.getInstance().currentUser!!
+
+
     init {
+
         this.mContext=mContext
         this.mChatList=mChatList
         this.imageUrl=imageUrl
@@ -38,29 +51,83 @@ class ChatsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
 
         return  if (position ==1){
-            val view:View = LayoutInflater.from(mContext).inflate(R.layout.message_item_left,parent,false)
+            val view:View = LayoutInflater.from(mContext).inflate(
+                R.layout.message_item_right,
+                parent,
+                false
+            )
             ViewHolder(view)
         }
         else{
-            val view:View = LayoutInflater.from(mContext).inflate(R.layout.message_item_right,parent,false)
+            val view:View = LayoutInflater.from(mContext).inflate(
+                R.layout.message_item_left,
+                parent,
+                false
+            )
             ViewHolder(view)
         }
 
     }
 
+    override fun getItemCount(): Int {
+        return mChatList.size
+    }
+
+
+
+
+
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val chat = mChatList[position]
 
         Picasso.get().load(imageUrl).into(holder.profile_image)
 
+        var strtym ="ad"
+        var time=""
+        var time2=""
+        val current = LocalDateTime.now()
 
-        if (chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")){
-           // image message- right side
+        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val formatted = current.format(formatter)
+
+       strtym = chat.getTymdate()!!
+
+        var tymHr = strtym.substring(8,10)
+        var tymMn = strtym.substring(10,12)
+        var ampm:String = "am"
+        if(tymHr.toInt()>12){
+            tymHr= (tymHr.toInt()-12).toString()
+            ampm="pm"
+        }
+        time2= "$tymHr:$tymMn $ampm"
+
+        if(formatted.toInt()-strtym.substring(0,8).toInt()==1){
+            time = "Yesterday"
+        }
+        else if(!(formatted.toInt()-strtym.substring(0,8).toInt()<=2)){
+            time = strtym.substring(6,8)+"/"+strtym.substring(4,6)+"/"+strtym.substring(0,4)
+
+            time+= " $time2"
+        }
+        else{
+            time = time2
+
+        }
+
+
+        if (chat.getMessage().equals("sent") && !chat.getUrl().equals("")){
+            // image message- right side
             if(chat.getSender().equals(firebaseUser!!.uid)){
+
                 holder.show_text_message!!.visibility = View.GONE
                 holder.right_image_view!!.visibility = View.VISIBLE
                 Picasso.get().load(chat.getUrl()).into(holder.right_image_view)
+
+
 
             }//image message- left side
             else if(!chat.getSender().equals(firebaseUser!!.uid)){
@@ -72,7 +139,12 @@ class ChatsAdapter(
         }
         //for Text Messages
         else{
-            holder.show_text_message!!.text = chat.getMessage()
+            holder.show_text_message!!.text = "${chat.getMessage()} \n \t $time"
+            holder.show_text_message!!.setOnLongClickListener(){
+                msgOptions(position,holder)
+                return@setOnLongClickListener true
+            }
+
         }
 
         //sent and seen message
@@ -80,7 +152,7 @@ class ChatsAdapter(
             if (chat.getIsseen()) {
                 holder.text_seen!!.text = "Seen"
 
-                if (chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")) {
+                if (chat.getMessage().equals("sent") && !chat.getUrl().equals("")) {
                     val rl = holder.text_seen!!.layoutParams as RelativeLayout.LayoutParams?
                     rl!!.setMargins(0, 245, 10, 0)
                     holder.text_seen!!.layoutParams = rl
@@ -88,16 +160,16 @@ class ChatsAdapter(
 
             }
 
-           else{
-               holder.text_seen!!.text = "Sent"
+            else{
+                holder.text_seen!!.text = "Sent"
 
-               if (chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")){
-                   val rl = holder.text_seen!!.layoutParams as RelativeLayout.LayoutParams?
-                   rl!!.setMargins(0,245,10,0)
-                   holder.text_seen!!.layoutParams =  rl
-               }
+                if (chat.getMessage().equals("sent") && !chat.getUrl().equals("")){
+                    val rl = holder.text_seen!!.layoutParams as RelativeLayout.LayoutParams?
+                    rl!!.setMargins(0, 245, 10, 0)
+                    holder.text_seen!!.layoutParams =  rl
+                }
 
-           }
+            }
 
 
         }
@@ -105,11 +177,12 @@ class ChatsAdapter(
             holder.text_seen!!.visibility = View.GONE
         }
 
+
+
+
     }
 
-    override fun getItemCount(): Int {
-        return mChatList.size
-    }
+
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var show_text_message:TextView?=null
@@ -128,16 +201,55 @@ class ChatsAdapter(
         }
     }
 
+
+
     override fun getItemViewType(position: Int): Int {
-
-
-
         return if(mChatList[position].getSender().equals(firebaseUser!!.uid)){
-            0
+            1
         }
         else{
-            1
+            0
         }
     }
 
+    private fun deleteMsg(position: Int,holder: ViewHolder){
+
+        val ref = FirebaseDatabase.getInstance().reference.child("Chats")
+            .child(mChatList.get(position).getMessageId()!!)
+            .removeValue()
+            .addOnCompleteListener{task ->
+                if(task.isSuccessful){
+                    Toast.makeText(holder.itemView.context, "Message Deleted", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(holder.itemView.context, "Error in Message Deleted", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+    }
+
+    private fun msgOptions(position:Int, holder: ViewHolder){
+        val options = arrayOf<CharSequence>("Delete","Copy")
+        var builder = AlertDialog.Builder(holder.itemView.context)
+        builder.setTitle("Options")
+        builder.setItems(options, DialogInterface.OnClickListener { dialog, i ->
+            if (i == 0) {
+                deleteMsg(position,holder)
+            }
+            else if(i==1){
+                copyText(position,holder)
+            }
+        })
+        builder.show()
+    }
+
+    private fun copyText(position: Int, holder: ChatsAdapter.ViewHolder) {
+
+        var str = mChatList.get(position).getMessage()
+
+        var myClipboard = getSystemService(mContext, ClipboardManager::class.java) as ClipboardManager
+        val clip: ClipData = ClipData.newPlainText("simple text", str)
+
+        myClipboard.setPrimaryClip(clip)
+    }
 }

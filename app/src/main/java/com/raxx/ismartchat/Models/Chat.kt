@@ -8,6 +8,9 @@ class Chat {
     private var url : String = ""
     private var messageId : String = ""
     private var isseen = false
+    private var tymdate = ""
+
+    
 
     constructor()
     constructor(
@@ -16,7 +19,8 @@ class Chat {
         receiver: String,
         url: String,
         messageId: String,
-        isseen: Boolean
+        isseen: Boolean,
+        tymdate:String
     ) {
         this.sender = sender
         this.message = message
@@ -24,7 +28,18 @@ class Chat {
         this.url = url
         this.messageId = messageId
         this.isseen = isseen
+        this.tymdate = tymdate
     }
+
+
+    fun getTymdate(): String? {
+        return tymdate
+    }
+
+    fun setTymdate(tymdate: String?) {
+        this.tymdate = tymdate!!
+    }
+
 
 
     fun getSender(): String? {
