@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
 
         viewPagerAdapter.addFragment(ChatsFragment(), "Chats")
-//        viewPagerAdapter.addFragment(GroupsFragment(), "Groups")
+        viewPagerAdapter.addFragment(GroupsFragment(), "Groups")
         viewPagerAdapter.addFragment(SearchFragment(), "Search")
         viewPagerAdapter.addFragment(SettingsFragment(), "Settings")
 
@@ -113,37 +113,37 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent1)
                 return true
             }
-//            R.id.menu_group -> {
-//                val builder = AlertDialog.Builder(this)
-//                builder.setTitle("Create Group")
-//                builder.setMessage("Enter group name")
-//                val input = EditText(this)
-//                builder.setView(input)
-//
-//
-//                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-//                    Toast.makeText(
-//                        applicationContext,
-//                        android.R.string.yes, Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//
-//                builder.setNegativeButton(android.R.string.no) { dialog, which ->
-//                    Toast.makeText(
-//                        applicationContext,
-//                        android.R.string.no, Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//
+            R.id.menu_group -> {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Create Group")
+                builder.setMessage("Enter group name")
+                val input = EditText(this)
+                builder.setView(input)
+
+
+                builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                    Toast.makeText(
+                        applicationContext,
+                        android.R.string.yes, Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                builder.setNegativeButton(android.R.string.no) { dialog, which ->
+                    Toast.makeText(
+                        applicationContext,
+                        android.R.string.no, Toast.LENGTH_SHORT
+                    ).show()
+                }
+
 //                builder.setNeutralButton("Maybe") { dialog, which ->
 //                    Toast.makeText(
 //                        applicationContext,
 //                        "Maybe", Toast.LENGTH_SHORT
 //                    ).show()
 //                }
-//                builder.show()
-//                return true
-//            }
+                builder.show()
+                return true
+            }
 
         }
         return false

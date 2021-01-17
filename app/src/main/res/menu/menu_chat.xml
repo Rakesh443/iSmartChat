@@ -4,8 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.raxx.ismartchat.MainActivity">
     <item
-        android:id="@+id/logout"
+        android:id="@+id/chat_search"
         android:orderInCategory="100"
         android:title="Search"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/chat_background"
+        android:orderInCategory="100"
+        android:title="Backgroud"
         app:showAsAction="never" />
 </menu>

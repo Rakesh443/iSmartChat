@@ -21,4 +21,11 @@
         android:orderInCategory="100"
         android:title="Explore"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_group"
+        android:orderInCategory="100"
+        android:title="Create Group"
+        app:showAsAction="never" />
+
 </menu>

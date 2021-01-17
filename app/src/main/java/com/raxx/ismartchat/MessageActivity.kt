@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +54,7 @@ class MessageActivity : AppCompatActivity() {
 
 
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +64,10 @@ class MessageActivity : AppCompatActivity() {
 //        cipher = Cipher.getInstance("AES")
 //        decipher = Cipher.getInstance("AES")
 //        secretKey = SecretKeySpec(encryptionKey,"AES")
+
+        setSupportActionBar(findViewById(R.id.msg_chat_toolbar))
+        supportActionBar!!.title=""
+
 
         intent = intent
         name = intent.getStringExtra("userid").toString()
@@ -434,5 +441,28 @@ class MessageActivity : AppCompatActivity() {
         super.onPause()
 
         reference!!.removeEventListener(seenListener!!)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_chat, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        when (item.itemId) {
+            R.id.chat_background -> {
+
+                return true
+            }
+            R.id.chat_search -> {
+
+                return true
+            }
+        }
+        return false
     }
 }
