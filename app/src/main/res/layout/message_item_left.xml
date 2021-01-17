@@ -2,16 +2,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="295dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#e6e6e6"
     android:padding="9dp"
     >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/msg_chat_tym_layout"
+        android:layout_marginLeft="150dp"
+        android:background="@drawable/date_round">
+        <TextView
+            android:id="@+id/msg_chat_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00000"
+            />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/msg_chat_tym_layout"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+
+        >
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/profile"
+
         android:visibility="gone"/>
 
     <TextView
@@ -20,7 +41,9 @@
         android:layout_height="wrap_content"
         android:text="testing user"
         android:padding="8dp"
-        android:textSize="18sp"
+        android:textSize="16sp"
+
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="6dp"
         android:layout_toRightOf="@+id/profile_image"
         android:background="@drawable/background_left"
@@ -43,6 +66,7 @@
         android:layout_below="@id/show_text_message"
         android:visibility="gone"
         />
+    </RelativeLayout>
 
 
 

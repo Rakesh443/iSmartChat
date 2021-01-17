@@ -152,6 +152,7 @@ class MessageActivity : AppCompatActivity() {
 
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun sendMessageToUser(
         senderid: String,
         receiverId: String,
@@ -160,6 +161,10 @@ class MessageActivity : AppCompatActivity() {
     ) {
 
 
+        val current = LocalDateTime.now()
+
+        val formatter = DateTimeFormatter.ofPattern("yyyyMMddhhss")
+        val formatted = current.format(formatter)
 
         val reference = FirebaseDatabase.getInstance().reference
         val messageKey = reference.push().key
@@ -192,6 +197,7 @@ class MessageActivity : AppCompatActivity() {
                                 .child(userIdVisit)
                                 .child(firebaseUser!!.uid)
                             chatListReceiverReference.child("id").setValue(firebaseUser!!.uid)
+                            chatListReceiverReference.child("chatlistTime").setValue(formatted)
 
                         }
 

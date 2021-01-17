@@ -1,11 +1,13 @@
 package com.raxx.ismartchat.Fragments
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +25,8 @@ import com.raxx.ismartchat.Models.Chatlist
 import com.raxx.ismartchat.Models.User
 import com.raxx.ismartchat.Notifications.Token
 import com.raxx.ismartchat.R
-
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class ChatsFragment : Fragment() {
@@ -35,6 +38,7 @@ class ChatsFragment : Fragment() {
     lateinit var recycler_view_chartlist:RecyclerView
     private var firebaseUser: FirebaseUser?=null
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,7 +54,8 @@ class ChatsFragment : Fragment() {
 
         userChatList = ArrayList()
 
-        val ref = FirebaseDatabase.getInstance().reference.child("ChatList").child(firebaseUser!!.uid).orderByPriority()
+
+        val ref = FirebaseDatabase.getInstance().reference.child("ChatList").child(firebaseUser!!.uid).orderByChild("chatlistTime")
         ref!!.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 (userChatList as ArrayList).clear()

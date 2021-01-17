@@ -5,13 +5,12 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.DialogInterface
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.raxx.ismartchat.Models.Chat
 import com.raxx.ismartchat.R
 import com.squareup.picasso.Picasso
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class ChatsAdapter(
     mContext: Context,
@@ -32,6 +33,8 @@ class ChatsAdapter(
     private val mContext:Context
     private val mChatList:List<Chat>
     private val imageUrl:String
+    var globalTym=""
+    var globalTym2=""
 
     var firebaseUser:FirebaseUser?=FirebaseAuth.getInstance().currentUser!!
 
@@ -75,11 +78,44 @@ class ChatsAdapter(
 
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val chat = mChatList[position]
 
         Picasso.get().load(imageUrl).into(holder.profile_image)
+
+        var strtym ="ad"
+        var time=""
+        var time2=""
+        val current = LocalDateTime.now()
+
+        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val formatted = current.format(formatter)
+
+        strtym = chat.getTymdate()!!
+
+        var tymHr = strtym.substring(8,10)
+        var tymMn = strtym.substring(10,12)
+        var ampm:String = "am"
+        if(tymHr.toInt()>12){
+            tymHr= (tymHr.toInt()-12).toString()
+            ampm="pm"
+        }
+        time2= "$tymHr:$tymMn $ampm"
+
+        if(formatted.toInt()-strtym.substring(0,8).toInt()==1){
+            time = "Yesterday"
+        }
+        else if(!(formatted.toInt()-strtym.substring(0,8).toInt()<=2)){
+            time = strtym.substring(6,8)+"/"+strtym.substring(4,6)+"/"+strtym.substring(0,4)
+
+            time+= " $time2"
+        }
+        else{
+            time = time2
+
+        }
 
 
         if (chat.getMessage().equals("sent") && !chat.getUrl().equals("")){
@@ -102,7 +138,9 @@ class ChatsAdapter(
         }
         //for Text Messages
         else{
-            holder.show_text_message!!.text = chat.getMessage()
+            globalTym= chat.getTymdate()!!.substring(0,8).substring(6,8)+"/"+strtym.substring(4,6)+"/"+strtym.substring(0,4)
+            holder.msg_chat_date!!.text =globalTym
+            holder.show_text_message!!.text = "${chat.getMessage()} \n \t $time2"
             holder.show_text_message!!.setOnLongClickListener(){
                 msgOptions(position,holder)
                 return@setOnLongClickListener true
@@ -148,11 +186,15 @@ class ChatsAdapter(
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        var msg_chat_tym_layout: LinearLayout?=null
         var show_text_message:TextView?=null
         var profile_image:ImageView?=null
         var left_image_view:ImageView?=null
         var text_seen:TextView?=null
         var right_image_view:ImageView?=null
+
+        var msg_chat_date:TextView?=null
+
 
         init {
             profile_image = itemView.findViewById(R.id.profile_image)
@@ -160,6 +202,9 @@ class ChatsAdapter(
             left_image_view = itemView.findViewById(R.id.left_image_view)
             text_seen = itemView.findViewById(R.id.text_seen)
             right_image_view = itemView.findViewById(R.id.right_image_view)
+            msg_chat_date = itemView.findViewById(R.id.msg_chat_date)
+            msg_chat_tym_layout = itemView.findViewById(R.id.msg_chat_tym_layout)
+
 
         }
     }
