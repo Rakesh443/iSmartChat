@@ -98,56 +98,8 @@ class CardChatAdapter(mContext: Context, mUsers: List<User>, isChatCheck: Boolea
             mContext.startActivity(intent)
         }
 
-//        holder.itemView!!.setOnLongClickListener(){
-//            chatListOptions(position, holder)
-//            return@setOnLongClickListener true
-//        }
-//
     }
 
-//    private fun chatListOptions(position: Int, holder: CardChatAdapter.CardViewHolder) {
-//
-//
-//            val options = arrayOf<CharSequence>("Delete")
-//            var builder = AlertDialog.Builder(holder.itemView.context)
-//            builder.setTitle("Options")
-//            builder.setItems(options, DialogInterface.OnClickListener { dialog, i ->
-//                if (i == 0) {
-//                    deleteChatList(position, holder)
-//                }
-//
-//            })
-//            builder.show()
-//
-//    }
-
-//    private fun deleteChatList(position: Int, holder: CardChatAdapter.CardViewHolder) {
-//        val ref = FirebaseDatabase.getInstance().reference.child("ChatList")
-//
-//
-//        ref.child(mUser[position].getUid()!!)
-//            .removeValue()
-//            .addOnCompleteListener{ task ->
-//                if(task.isSuccessful){
-//                    Toast.makeText(holder.itemView.context, "Message Deleted", Toast.LENGTH_SHORT).show()
-//                }
-//                else{
-//                    Toast.makeText(
-//                        holder.itemView.context,
-//                        "Error in Message Deleted",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//
-//            }
-//        removeItem(position,holder)
-//
-//    }
-//    private fun removeItem(position: Int, holder: CardViewHolder) {
-//        holder.remove(position)
-//        notifyItemRemoved(position)
-//        notifyItemRangeChanged(position, holder.size())
-//    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun retrieveLastMsg(
@@ -181,6 +133,7 @@ class CardChatAdapter(mContext: Context, mUsers: List<User>, isChatCheck: Boolea
                             if(formatted.toInt()-strtym.substring(0,8).toInt()>1 && formatted.toInt()-strtym.substring(0,8).toInt()<2){
                                 time = strtym.substring(6,8)+"/"+strtym.substring(4,6)+"/"+strtym.substring(0,4)
                             }
+
                             else if(formatted.toInt()-strtym.substring(0,8).toInt()==1){
                                 time = "Yesterday"
                             }
