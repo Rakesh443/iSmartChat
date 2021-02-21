@@ -2,11 +2,13 @@ package com.raxx.ismartchat
 
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -25,6 +27,9 @@ import com.raxx.ismartchat.Fragments.SettingsFragment
 import com.raxx.ismartchat.Models.User
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import java.sql.Date
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class MainActivity : AppCompatActivity() {
@@ -192,8 +197,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBackPressed() {
         super.onBackPressed()
+        val current = LocalDateTime.now()
+
+        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val formatted = current.format(formatter)
         updateStatus("offline")
 
     }

@@ -99,6 +99,7 @@ class MessageActivity : AppCompatActivity() {
                 val user: User? = p0.getValue((User::class.java))
 
                 msg_chat_user_name.text = user!!.getUserName()
+                msg_chat_user_online.text = user!!.getStatus()
 
                 Picasso.get().load(user.getProfile()).into(msg_chat_profile_image)
 

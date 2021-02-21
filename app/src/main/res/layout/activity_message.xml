@@ -20,6 +20,7 @@
         android:background="@color/design_default_color_secondary_variant"
         app:popupTheme="@style/AppTheme.PopupOverlay" >
 
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/msg_chat_profile_image"
             android:layout_width="32dp"
@@ -28,16 +29,36 @@
             android:tint="@android:color/white">
 
         </de.hdodenhof.circleimageview.CircleImageView>
-        <TextView
-            android:id="@+id/msg_chat_user_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="user"
-            android:textSize="18sp"
-            android:layout_marginLeft="26dp"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            />
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/msg_chat_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="user"
+                android:textSize="18sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                />
+
+
+            <TextView
+                android:id="@+id/msg_chat_user_online"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="offline"
+                android:textSize="10sp"
+                android:layout_marginLeft="10dp"
+                />
+
+        </LinearLayout>
+
+
     </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
