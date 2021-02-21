@@ -3,7 +3,7 @@ package com.raxx.ismartchat.Models
 class User{
     private var uid : String = ""
     private var userName : String = ""
-    private var status : String = ""
+    private var status : String = "offline"
     private var search : String = ""
     private var profile : String = ""
     private var email : String = ""

@@ -33,7 +33,7 @@ class ChatsFragment : Fragment() {
 
     private var userAdapter: UserAdapter? =null
     private var cardChatAdapter: CardChatAdapter? =null
-    private var mUsers : List<User>? = null
+     var mUsers : List<User>? = null
     private var userChatList : List<Chatlist>? = null
     lateinit var recycler_view_chartlist:RecyclerView
     private var firebaseUser: FirebaseUser?=null
@@ -64,11 +64,11 @@ class ChatsFragment : Fragment() {
                     (userChatList as ArrayList).add(chatlist!!)
 
 
-//                    retriveChatList()
+                    retriveChatList()
 
 
                 }
-                retriveChatList()
+//                retriveChatList()
             }
 
             override fun onCancelled(p0: DatabaseError) {
@@ -89,7 +89,7 @@ class ChatsFragment : Fragment() {
     private fun retriveChatList(){
         mUsers=ArrayList()
 
-        val ref = FirebaseDatabase.getInstance().reference.child("Users").orderByPriority()
+        val ref = FirebaseDatabase.getInstance().reference.child("Users")
 
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
@@ -111,8 +111,6 @@ class ChatsFragment : Fragment() {
 //                cardChatAdapter!!.notifyDataSetChanged()
 
                 recycler_view_chartlist.adapter = cardChatAdapter
-
-
 
 
             }

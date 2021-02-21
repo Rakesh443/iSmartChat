@@ -113,6 +113,7 @@ class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener
                    userHashMap["search"]=rname.text.toString().toLowerCase()
                    userHashMap["DOB"]=rdateOfBirth.text.toString()
                    userHashMap["email"]=rEmailAddress.text.toString()
+                   userHashMap["privateAccount"]=false
 
                     refUser.updateChildren(userHashMap)
                         .addOnCompleteListener { task ->

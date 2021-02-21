@@ -187,14 +187,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-//        updateStatus("online")
+        updateStatus("online")
         super.onResume()
 
     }
 
-
-    override fun onPause() {
-        super.onPause()
+    override fun onBackPressed() {
+        super.onBackPressed()
         updateStatus("offline")
+
     }
+
+//    override fun onPause() {
+//        super.onPause()
+//        updateStatus("offline")
+//    }
 }
