@@ -55,20 +55,21 @@ class ChatsFragment : Fragment() {
         userChatList = ArrayList()
 
 
-        val ref = FirebaseDatabase.getInstance().reference.child("ChatList").child(firebaseUser!!.uid).orderByChild("chatlistTime")
+        val ref = FirebaseDatabase.getInstance().reference.child("ChatList")
         ref!!.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 (userChatList as ArrayList).clear()
-                for(snapshot in p0.children){
-                    val chatlist = snapshot.getValue(Chatlist::class.java)
-                    (userChatList as ArrayList).add(chatlist!!)
-
+                if(p0.hasChildren()){
+                    for(snapshot in p0.children){
+                        val chatlist = snapshot.getValue(Chatlist::class.java)
+                        (userChatList as ArrayList).add(chatlist!!)
 
 //                    retriveChatList()
-
-
+                    }
+                    retriveChatList()
                 }
-                retriveChatList()
+
+//                retriveChatList()
             }
 
             override fun onCancelled(p0: DatabaseError) {

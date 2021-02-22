@@ -29,16 +29,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    var refUsers: DatabaseReference? =null
-    var firebaseUser: FirebaseUser? =null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar_main))
 
-        firebaseUser= FirebaseAuth.getInstance().currentUser
-        refUsers=FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
+        val firebaseUser= FirebaseAuth.getInstance().currentUser
+        val refUsers=FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
         refUsers!!.keepSynced(true)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar_main)
@@ -177,6 +177,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateStatus(status:String){
+        val firebaseUser= FirebaseAuth.getInstance().currentUser
         val ref = FirebaseDatabase.getInstance()
             .reference.child("Users")
             .child(firebaseUser!!.uid)
@@ -187,7 +188,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-//        updateStatus("online")
+        updateStatus("online")
         super.onResume()
 
     }
